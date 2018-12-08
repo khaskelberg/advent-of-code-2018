@@ -3,6 +3,7 @@ defmodule AdventOfCode2018.Day07Test do
 
   import AdventOfCode2018.Day07
 
+  @tag :skip
   test "part1" do
     input = """
     Step C must be finished before step A can begin.
@@ -19,6 +20,7 @@ defmodule AdventOfCode2018.Day07Test do
     assert result == "CABDFE"
   end
 
+  @tag :skip
   test "part2" do
     input = """
     Step C must be finished before step A can begin.

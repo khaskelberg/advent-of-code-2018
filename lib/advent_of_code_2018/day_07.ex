@@ -51,46 +51,51 @@ defmodule AdventOfCode2018.Day07 do
     args
     |> parse_input
     |> build_graph
-    |> work([{0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}], 0)
+    |> work(%{1 => {0, 0}, 2 => {0, 0}, 3 => {0, 0}, 4 => {0, 0}, 5 => {0, 0}})
   end
 
-  def work(graph, workers, _) when graph == %{} do
-    {max_t, _} = Enum.max_by(workers, fn {time, _} -> time end)
-    max_t
+  def work(graph, workers) when graph == %{} do
+    {_, {time, _}} = Enum.max_by(workers, fn {_, {time, _}} -> time end)
+    time
   end
 
-  def work(graph, workers, second) do
-    stopped_nodes =
-      Enum.reduce(workers, [], fn
-        {time, vertex}, acc when time <= second -> [vertex | acc]
-        {_, _}, acc -> acc
-      end)
+  # def work(graph, workers, _) when graph == %{} do
+  #   {max_t, _} = Enum.max_by(workers, fn {time, _} -> time end)
+  #   max_t
+  # end
 
-    graph_without_completed =
-      Enum.reduce(graph, %{}, fn {v, edges}, acc ->
-        Map.put(acc, v, edges -- stopped_nodes)
-      end)
+  # def work(graph, workers, second) do
+  #   stopped_nodes =
+  #     Enum.reduce(workers, [], fn
+  #       {time, vertex}, acc when time <= second -> [vertex | acc]
+  #       {_, _}, acc -> acc
+  #     end)
 
-    {updated_graph, updated_workers} =
-      Enum.reduce(workers, {graph_without_completed, []}, fn
-        {time, vertex}, {acc_graph, workers} when time > second ->
-          {acc_graph, [{time, vertex} | workers]}
+  #   graph_without_completed =
+  #     Enum.reduce(graph, %{}, fn {v, edges}, acc ->
+  #       Map.put(acc, v, edges -- stopped_nodes)
+  #     end)
 
-        {time, vertex}, {acc_graph, workers} when acc_graph == %{} ->
-          {acc_graph, [{time, vertex} | workers]}
+  #   {updated_graph, updated_workers} =
+  #     Enum.reduce(workers, {graph_without_completed, []}, fn
+  #       {time, vertex}, {acc_graph, workers} when time > second ->
+  #         {acc_graph, [{time, vertex} | workers]}
 
-        {time, vertex}, {acc_graph, workers} ->
-          {node, edges} =
-            Enum.min_by(acc_graph, fn
-              {node, []} -> node
-              {_, _} -> 1000
-            end)
+  #       {time, vertex}, {acc_graph, workers} when acc_graph == %{} ->
+  #         {acc_graph, [{time, vertex} | workers]}
 
-          if edges == [],
-            do: {Map.delete(acc_graph, node), [{second + node - 4, node} | workers]},
-            else: {acc_graph, [{time, vertex} | workers]}
-      end)
+  #       {time, vertex}, {acc_graph, workers} ->
+  #         {node, edges} =
+  #           Enum.min_by(acc_graph, fn
+  #             {node, []} -> node
+  #             {_, _} -> 1000
+  #           end)
 
-    work(updated_graph, updated_workers, second + 1)
-  end
+  #         if edges == [],
+  #           do: {Map.delete(acc_graph, node), [{second + node - 4, node} | workers]},
+  #           else: {acc_graph, [{time, vertex} | workers]}
+  #     end)
+
+  #   work(updated_graph, updated_workers, second + 1)
+  # end
 end
