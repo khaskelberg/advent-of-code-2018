@@ -3,17 +3,16 @@ defmodule AdventOfCode2018.Day11Test do
 
   import AdventOfCode2018.Day11
 
-  @tag :skip
   test "part1" do
-    input = nil 
-    result = part1(input)
+    input = 18
+    result = part1(18) |> elem(0)
 
-    assert result
+    assert result == {33, 45}
   end
 
   @tag :skip
   test "part2" do
-    input = nil 
+    input = nil
     result = part2(input)
 
     assert result

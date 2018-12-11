@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.D10.P1 do
+defmodule Mix.Tasks.D10 do
   use Mix.Task
 
   import AdventOfCode2018.Day10
